@@ -22,6 +22,9 @@ parameters:
         maxCPUs: "$(($(nproc) / 3))"
         rawToolchainCacheURL: "$(rawToolchainCacheURL_ARM64)"
         rawToolchainExpectedHash: "65de43b3bdcfdaac71df1f11fd1f830a8109b1eb9d7cb6cbc2e2d0e929d0ef76"
+  - name: dailyBuildID
+    type: string
+    default: ""
 
 resources:
   repositories:
@@ -65,6 +68,7 @@ extends:
 
                   - template: .pipelines/templates/ToolchainBuild.yml@self
                     parameters:
+                      dailyBuildID: "${{ parameters.dailyBuildID }}"
                       outputArtifactsFolder: $(ob_outputDirectory)
                       selfRepoName: self
 
@@ -99,6 +103,7 @@ extends:
                   - template: .pipelines/templates/PackageBuild.yml@self
                     parameters:
                       customToolchainArtifactName: $(toolchainArtifactNameBase)_${{ configuration.name }}
+                      dailyBuildID: "${{ parameters.dailyBuildID }}"
                       isCheckBuild: true
                       isQuickRebuildPackages: true
                       outputArtifactsFolder: $(ob_outputDirectory)

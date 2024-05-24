@@ -6,6 +6,10 @@ parameters:
     type: string
     default: "$(Build.SourcesDirectory)"
 
+  - name: dailyBuildID
+    type: string
+    default: ""
+
   - name: concurrentPackageBuilds
     type: number
     default: 12
@@ -209,6 +213,7 @@ steps:
       fi
 
       sudo make -C "${{ parameters.buildRepoRoot }}/toolkit" build-packages -j$(nproc) \
+        DAILY_BUILD_ID="${{ parameters.dailyBuildID }}" \
         CONCURRENT_PACKAGE_BUILDS=${{ parameters.concurrentPackageBuilds }} \
         CONFIG_FILE="" \
         MAX_CPU="${{ parameters.maxCPU }}" \
